@@ -24,7 +24,6 @@ RSpec.describe "Adding Customers", type: [:request, :customer, :api], fast: fals
         expect(address[0]["city_name"]).to eq "Miami"
       end
     end
-
   end
 
   context "Without email" do
@@ -44,23 +43,22 @@ RSpec.describe "Adding Customers", type: [:request, :customer, :api], fast: fals
 
   def request_object
     {
-      customer: {
         name: "Jack Johnson",
         email: "jack@johnson.com",
         phone: "12332231233",
         mobile_phone: "8898438344",
-        addresses_attributes: [
+        address: [
           {
             street: "Main Street",
-            city_id: 1,
+            city_id: "1",
             zip_code: "90210"
           }
         ]
-      }
     }
   end
 
   def body
+    require 'pry'; binding.pry
     JSON.parse(response.body)
   end
 end

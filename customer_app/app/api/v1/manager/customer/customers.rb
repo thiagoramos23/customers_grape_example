@@ -8,30 +8,32 @@ module API
           resource :customers do
             desc 'List Customers'
             get do
-              customers = ::Customer.all
+              customers = Repositories::Customer.new.all
               present customers, with: API::V1::Manager::Customer::Entities::CustomerPresenter
             end
 
             desc 'Creating a customer'
+            params do
+              requires :name, type: String
+              requires :email, type: String
+              requires :phone, type: String
+              requires :mobile_phone, type: String
+              optional :address, type: Array do
+                requires :street, type: String
+                requires :zip_code, type: String
+                requires :city_id, type: String
+              end
+            end
             post do
-              permited_params = clean_params(params).require(:customer).permit(:name, :email, :phone, :mobile_phone,
-                                                                              addresses_attributes:[:street, :city_id, :zip_code])
-              created_customer = ::Customer.create!(permited_params)
-              present created_customer, with: API::V1::Manager::Customer::Entities::CustomerPresenter
-            end
-
-            desc 'Updating a customer'
-            put ":id" do
-              permited_params = clean_params(params).require(:customer).permit(:name, :email, :phone, :mobile_phone,
-                                                                              addresses_attributes:[:street, :city_id, :zip_code])
-              customer = ::Customer.find(params[:id])
-              customer.update_attributes(permited_params)
-              present customer, with: API::V1::Manager::Customer::Entities::CustomerPresenter
-            end
-
-            desc 'Removing a customer'
-            delete ":id" do
-              ::Customer.find(params[:id]).destroy!
+              Services::CustomerCreator.new(params).create(
+                success: -> (customer) {
+                  require 'pry'; binding.pry
+                  present customer, with: API::V1::Manager::Customer::Entities::CustomerPresenter
+                },
+                fail: -> (exception) {
+                  error!(exception.message)
+                }
+              )
             end
           end
         end

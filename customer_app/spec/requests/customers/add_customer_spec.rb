@@ -30,14 +30,14 @@ RSpec.describe "Adding Customers", type: [:request, :customer, :api], fast: fals
 
     before {
       customer = request_object
-      customer[:customer].delete(:email)
+      customer.delete(:email)
       post "/api/v1/customers", customer
     }
 
     it "must return a key with error_message" do
       expect(body).to have_key("response_type")
       expect(body["response_type"]).to eq "error"
-      expect(body["message"]).to include "Email can't be blank"
+      expect(body["message"]).to include "email is missing"
     end
   end
 
@@ -58,7 +58,6 @@ RSpec.describe "Adding Customers", type: [:request, :customer, :api], fast: fals
   end
 
   def body
-    require 'pry'; binding.pry
     JSON.parse(response.body)
   end
 end

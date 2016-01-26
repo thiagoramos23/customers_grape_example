@@ -4,7 +4,7 @@ module Repositories
 
     def create params
       address_params = params.delete(:addresses)
-      address = Address.new(address_params[0]) unless address_params[0].present?
+      address = Address.new(address_params[0]) if address_params[0].present?
       customer = ::Customer.new(params)
       customer.addresses.push(address) unless address.nil?
       save_record customer

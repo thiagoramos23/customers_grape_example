@@ -11,13 +11,7 @@ RSpec.describe Repositories::Customer, type: [:repository], fast: false do
       subject.save_record(customer_ar)
     }.to change(Customer, :count).by 1
   end
-
-  it "creates a customer" do
-    expect {
-      subject.create(customer)
-    }.to change(Customer, :count).by 1
-  end
-
+  
   it "updates a customer" do
     subject.update_attributes(mark, name: "John")
     expect(Customer.find(mark.id).name).to eq "John"

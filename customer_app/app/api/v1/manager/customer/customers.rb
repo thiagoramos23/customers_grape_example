@@ -27,7 +27,6 @@ module API
             post do
               Services::CustomerCreator.new(params).create(
                 success: -> (customer) {
-                  require 'pry'; binding.pry
                   present customer, with: API::V1::Manager::Customer::Entities::CustomerPresenter
                 },
                 fail: -> (exception) {

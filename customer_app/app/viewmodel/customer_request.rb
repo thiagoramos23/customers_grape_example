@@ -6,7 +6,7 @@ module Viewmodel
       @email = args[:email] || ""
       @phone = args[:phone] || ""
       @mobile_phone = args[:mobile_phone] || ""
-      @address = Viewmodel::AddressRequest.new(args[:address][0] || {})
+      @address = create_address_request(args)
     end
 
     def to_hash
@@ -17,6 +17,14 @@ module Viewmodel
         mobile_phone: @mobile_phone,
         addresses: [@address.to_hash]
       }
+    end
+
+    private
+    def create_address_request args
+      unless args[:address].nil?
+        return Viewmodel::AddressRequest.new(args[:address][0] || {})
+      end
+      return Viewmodel::AddressRequest.new({})
     end
   end
 end

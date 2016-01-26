@@ -16,9 +16,7 @@ require 'rails_helper'
 RSpec.describe Customer, type: :model do
 
   context "Validation" do
-    before {
-      customer = Customer.new(name: "John")
-    }
+    let(:customer) { Customer.new(name: "John") }
 
     it "must validate presence of email" do
       expect(customer.valid?).to be_falsey

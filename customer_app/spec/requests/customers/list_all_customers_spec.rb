@@ -16,16 +16,45 @@ RSpec.describe "Listing All Customers", type: [:request, :customer, :api], fast:
     end
 
     it "has all the keys" do
-      result = body[0]
-      verify_keys_for(result)
+      verify_keys_for(result(0))
     end
 
     it "has same name" do
-      result = body[0]
-      expect(result["name"]).to eq john.name
+      expect(result(0)["name"]).to eq john.name
+    end
+
+    it "has same email" do
+      expect(result(0)["email"]).to eq john.email
+    end
+
+    it "has same phone" do
+      expect(result(0)["phone"]).to eq john.phone
+    end
+
+    it "has same mobile phone" do
+      expect(result(0)["mobile_phone"]).to eq john.mobile_phone
+    end
+
+    it "has one address" do
+      addressess = result(0)["addresses"]
+      expect(addressess.count).to eq 1
+    end
+
+    it "has same address" do
+      addressess = result(0)["addresses"]
+      john_address = john.addresses[0]
+      expect(addressess[0]["zip_code"]).to eq john_address.zip_code
+      expect(addressess[0]["city_name"]).to eq john_address.city.name
+      expect(addressess[0]["state_name"]).to eq john_address.city.state_name
+      expect(addressess[0]["street"]).to eq john_address.street
+    end
+
+    def result index
+      body[index]
     end
 
     def body
+      require 'pry'; binding.pry
       JSON.parse(response.body)
     end
 

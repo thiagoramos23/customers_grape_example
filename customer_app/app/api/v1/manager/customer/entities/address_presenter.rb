@@ -10,11 +10,11 @@ module API
             expose :zip_code
 
             def state_name
-              object.city.state_name
+              object.city.state_name unless object.city.nil?
             end
 
             def city_name
-              object.city.name
+              object.city.name unless object.city.nil?
             end
           end
         end

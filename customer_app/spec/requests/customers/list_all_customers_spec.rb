@@ -54,7 +54,6 @@ RSpec.describe "Listing All Customers", type: [:request, :customer, :api], fast:
     end
 
     def body
-      require 'pry'; binding.pry
       JSON.parse(response.body)
     end
 

@@ -3,7 +3,7 @@ module API
     module Manager
       class Root < Grape::API
         format :json
-        mount API::V1::Customer::Customers
+        mount API::V1::Manager::Customer::Customers
       end
     end
   end
